@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.markdown-simple h1 {
+  @apply text-3xl font-bold mb-4 text-gray-900;
+}
+
+.markdown-simple h2 {
+  @apply text-2xl font-bold mb-3 text-gray-900;
+}
+
+.markdown-simple h3 {
+  @apply text-xl font-bold mb-2 text-gray-900;
+}
+
+.markdown-simple p {
+  @apply mb-4 text-gray-700;
+}
+
+.markdown-simple ul {
+  @apply list-disc list-inside mb-4 text-gray-700;
+}
+
+.markdown-simple ol {
+  @apply list-decimal list-inside mb-4 text-gray-700;
+}
+
+.markdown-simple blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic my-4 text-gray-600;
+}
+
+.markdown-simple code {
+  @apply bg-gray-100 px-1 rounded text-sm font-mono;
+}
+
+.markdown-simple pre {
+  @apply bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto;
+}
+
+/* Colorful Theme */
+.markdown-colorful h1 {
+  @apply text-3xl font-bold mb-4 text-indigo-600;
+}
+
+.markdown-colorful h2 {
+  @apply text-2xl font-bold mb-3 text-purple-600;
+}
+
+.markdown-colorful h3 {
+  @apply text-xl font-bold mb-2 text-pink-600;
+}
+
+.markdown-colorful p {
+  @apply mb-4 text-gray-800;
+}
+
+.markdown-colorful ul {
+  @apply list-disc list-inside mb-4 text-teal-700;
+}
+
+.markdown-colorful ol {
+  @apply list-decimal list-inside mb-4 text-blue-700;
+}
+
+.markdown-colorful blockquote {
+  @apply border-l-4 border-amber-400 pl-4 italic my-4 text-amber-700 bg-amber-50;
+}
+
+.markdown-colorful code {
+  @apply bg-emerald-100 px-1 rounded text-sm font-mono text-emerald-700;
+}
+
+.markdown-colorful pre {
+  @apply bg-slate-800 text-slate-100 p-4 rounded-lg mb-4 overflow-x-auto;
+}
