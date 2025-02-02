@@ -7,18 +7,41 @@ function App() {
   const [markdown, setMarkdown] = useState('');
   const [isColorful, setIsColorful] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const generatePDF = () => {
-    if (previewRef.current) {
+  const generatePDF = async () => {
+    if (!previewRef.current || isGenerating) return;
+    
+    setIsGenerating(true);
+    
+    try {
       const element = previewRef.current;
       const opt = {
-        margin: 1,
+        margin: [0.5, 0.5, 0.5, 0.5],
         filename: 'markdown-converted.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          letterRendering: true,
+          windowWidth: element.scrollWidth,
+          windowHeight: element.scrollHeight
+        },
+        jsPDF: {
+          unit: 'in',
+          format: 'a4',
+          orientation: 'portrait',
+          compress: true
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
-      html2pdf().set(opt).from(element).save();
+
+      await html2pdf().set(opt).from(element).save();
+    } catch (error) {
+      console.error('PDF generation failed:', error);
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -53,10 +76,13 @@ function App() {
               <h2 className="text-lg font-semibold text-gray-900">Markdown Input</h2>
               <button
                 onClick={generatePDF}
-                className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                disabled={isGenerating}
+                className={`flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-md ${
+                  isGenerating ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-700'
+                }`}
               >
                 <Download className="h-5 w-5" />
-                <span>Export PDF</span>
+                <span>{isGenerating ? 'Generating...' : 'Export PDF'}</span>
               </button>
             </div>
             <textarea
@@ -71,11 +97,11 @@ function App() {
             <h2 className="text-lg font-semibold text-gray-900">Preview</h2>
             <div
               ref={previewRef}
-              className={`w-full h-[calc(100vh-250px)] p-4 border rounded-lg overflow-y-auto ${
+              className={`w-full h-[calc(100vh-250px)] p-8 border rounded-lg overflow-y-auto bg-white ${
                 isColorful ? 'markdown-colorful' : 'markdown-simple'
               }`}
             >
-              <ReactMarkdown>{markdown}</ReactMarkdown>
+              <ReactMarkdown>{markdown || '# Preview will appear here\n\nStart typing in the markdown editor to see the preview.'}</ReactMarkdown>
             </div>
           </div>
         </div>
